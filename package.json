@@ -1,0 +1,25 @@
+{
+  "name": "mon-saas-etsy",
+  "version": "1.0.0",
+  "description": "SaaS de personnalisation Etsy",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahmed-dev-vps/mon-saas-etsy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ahmed-dev-vps/mon-saas-etsy/issues"
+  },
+  "homepage": "https://github.com/ahmed-dev-vps/mon-saas-etsy#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
