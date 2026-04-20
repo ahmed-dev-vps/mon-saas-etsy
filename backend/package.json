@@ -1,0 +1,17 @@
+{
+  "name": "mon-saas-etsy-backend",
+  "version": "1.0.0",
+  "description": "Backend API for post-purchase personalization SaaS",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "node src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.104.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0"
+  }
+}

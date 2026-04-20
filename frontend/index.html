@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MugStudio - Personnalisation client</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="container" id="access-container">
+      <h1>Personnalisation post-achat</h1>
+      <p><a href="./seller.html">Espace vendeur</a></p>
+
+      <section class="card" id="access-card">
+        <h2>Accès sécurisé à votre design</h2>
+        <form id="access-form">
+          <label>
+            Order ID
+            <input id="orderId" required placeholder="ORD-1001" />
+          </label>
+          <label>
+            Email
+            <input id="email" required type="email" placeholder="client@example.com" />
+          </label>
+          <button type="submit">Accéder à l'éditeur</button>
+        </form>
+        <p id="access-message"></p>
+      </section>
+    </main>
+
+    <section id="editor-screen" class="hidden client-editor-screen">
+      <header class="client-header">
+        <div>
+          <h2>MugStudio</h2>
+          <p id="canvas-info">Canvas: -</p>
+        </div>
+        <div class="client-header-actions">
+          <button id="save-btn">Sauvegarder</button>
+          <button id="mockup-btn">Aperçu mockup</button>
+          <button id="export-btn">Exporter</button>
+        </div>
+      </header>
+
+      <div class="client-layout">
+        <aside class="client-panel left">
+          <h3>Outils</h3>
+          <div class="ctrl-group">
+            <label>Texte</label>
+            <input id="text-input" placeholder="Votre texte" />
+            <div class="actions">
+              <button id="add-text-btn">Ajouter texte</button>
+            </div>
+          </div>
+
+          <div class="ctrl-group">
+            <label>Couleur du texte</label>
+            <input id="text-color" type="color" value="#1a1410" />
+          </div>
+
+          <div class="ctrl-group">
+            <label>Image</label>
+            <input id="image-upload" type="file" accept="image/*" />
+          </div>
+
+          <div class="ctrl-group">
+            <label>Templates rapides</label>
+            <div class="tool-grid">
+              <button class="template-btn" data-template="birthday">Birthday</button>
+              <button class="template-btn" data-template="love">Love</button>
+              <button class="template-btn" data-template="fun">Fun</button>
+              <button class="template-btn" data-template="coffee">Coffee</button>
+            </div>
+          </div>
+
+          <div class="ctrl-group">
+            <label>Actions</label>
+            <div class="actions">
+              <button id="center-btn">Centrer</button>
+              <button id="delete-btn">Supprimer</button>
+            </div>
+          </div>
+        </aside>
+
+        <main class="client-canvas-wrap">
+          <div class="client-canvas-card">
+            <canvas id="design-canvas"></canvas>
+            <div class="mug-3d-section">
+              <h3>Visualisation 3D du mug</h3>
+              <div id="mug-3d-viewer"></div>
+              <p id="mug-3d-status">Le modèle 3D peut être tourné à la souris.</p>
+            </div>
+          </div>
+        </main>
+
+        <aside class="client-panel right">
+          <h3>Aperçu</h3>
+          <img id="preview-image" alt="Aperçu design" class="client-preview-image" />
+          <p id="mockup-label">Mockup: -</p>
+
+          <h3>Calques</h3>
+          <div id="layer-list" class="layer-list-simple"></div>
+        </aside>
+      </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

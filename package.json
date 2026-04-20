@@ -1,25 +1,16 @@
 {
   "name": "mon-saas-etsy",
   "version": "1.0.0",
-  "description": "SaaS de personnalisation Etsy",
-  "main": "server.js",
+  "description": "SaaS post-achat de personnalisation POD",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "start": "concurrently \"npm run start --prefix backend\" \"npm run start --prefix frontend\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ahmed-dev-vps/mon-saas-etsy.git"
-  },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/ahmed-dev-vps/mon-saas-etsy/issues"
-  },
-  "homepage": "https://github.com/ahmed-dev-vps/mon-saas-etsy#readme",
   "dependencies": {
-    "express": "^5.2.1"
+    "concurrently": "^9.2.1"
   }
 }

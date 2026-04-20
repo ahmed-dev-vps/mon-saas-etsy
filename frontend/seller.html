@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Espace vendeur</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="seller-page">
+    <!-- Écran connexion / inscription (plein écran) -->
+    <div id="seller-auth-screen" class="seller-auth-screen">
+      <div class="seller-auth-inner">
+        <h1 class="seller-auth-title">Espace vendeur</h1>
+        <p class="seller-auth-sub">Connectez-vous pour gérer vos commandes, canvas et produits.</p>
+        <section class="card seller-auth-card">
+          <h2 class="seller-auth-heading">Connexion</h2>
+          <div class="grid">
+            <label>
+              Email
+              <input id="seller-email" type="email" placeholder="vous@example.com" autocomplete="email" />
+            </label>
+            <label>
+              Mot de passe
+              <input id="seller-password" type="password" placeholder="••••••••" autocomplete="current-password" />
+            </label>
+          </div>
+          <div class="actions seller-auth-actions">
+            <button type="button" id="seller-login-btn" class="seller-btn-primary">Se connecter</button>
+            <button type="button" id="seller-signup-btn" class="seller-btn-secondary">Créer un compte</button>
+          </div>
+          <p id="seller-auth-message" class="seller-auth-feedback" role="status"></p>
+        </section>
+        <p class="seller-auth-footer-link"><a href="./index.html">← Page personnalisation client</a></p>
+      </div>
+    </div>
+
+    <!-- Dashboard : menu gauche + contenu -->
+    <div id="seller-app-shell" class="seller-app-shell hidden" aria-hidden="true">
+      <aside class="seller-sidebar">
+        <div class="seller-sidebar-brand">
+          <span class="seller-sidebar-logo">POD</span>
+          <span class="seller-sidebar-app">Vendeur</span>
+        </div>
+        <nav class="seller-nav" aria-label="Sections">
+          <button type="button" class="seller-nav-item active" data-tab="orders-tab" data-title="Commandes">
+            Commandes
+          </button>
+          <button type="button" class="seller-nav-item" data-tab="canvas-tab" data-title="Canvas">Canvas</button>
+          <button type="button" class="seller-nav-item" data-tab="products-tab" data-title="Produits Etsy">
+            Produits
+          </button>
+        </nav>
+        <div class="seller-sidebar-footer">
+          <a href="./index.html" class="seller-sidebar-link">Page client</a>
+          <button type="button" id="seller-delete-account-btn" class="seller-btn-ghost">Supprimer mon compte</button>
+          <button type="button" id="seller-logout-btn" class="seller-btn-ghost">Déconnexion</button>
+        </div>
+      </aside>
+
+      <div class="seller-workspace">
+        <header class="seller-topbar">
+          <h2 id="seller-panel-title" class="seller-panel-title">Commandes</h2>
+          <div class="seller-topbar-right">
+            <span id="seller-user-email" class="seller-user-email"></span>
+            <span id="etsy-status-badge" class="seller-etsy-badge">Etsy: non connecté</span>
+            <button type="button" id="connect-etsy-btn" class="seller-btn-outline">Connecter Etsy</button>
+            <button type="button" id="refresh-dashboard-btn" class="seller-btn-outline">Rafraîchir</button>
+          </div>
+        </header>
+        <p id="seller-dashboard-message" class="seller-dashboard-message" role="status"></p>
+
+        <main class="seller-main">
+          <section id="orders-tab" class="seller-panel">
+            <div class="grid">
+              <label>
+                Email client
+                <input id="new-order-email" type="email" placeholder="client@example.com" />
+              </label>
+              <label>
+                Produit
+                <select id="new-order-product"></select>
+              </label>
+            </div>
+            <div class="actions">
+              <button type="button" id="create-order-btn">Créer commande + lien client</button>
+            </div>
+            <div id="orders-container" class="seller-stack"></div>
+          </section>
+
+          <section id="canvas-tab" class="seller-panel hidden">
+            <div class="grid">
+              <label>Nom <input id="canvas-name" placeholder="mug" /></label>
+              <label>Width <input id="canvas-width" type="number" value="1200" /></label>
+              <label>Height <input id="canvas-height" type="number" value="1200" /></label>
+              <label>Printable X <input id="canvas-x" type="number" value="100" /></label>
+              <label>Printable Y <input id="canvas-y" type="number" value="100" /></label>
+              <label>Printable Width <input id="canvas-area-width" type="number" value="1000" /></label>
+              <label>Printable Height <input id="canvas-area-height" type="number" value="1000" /></label>
+              <label>Mockup URL <input id="canvas-mockup" placeholder="https://..." /></label>
+            </div>
+            <div class="actions">
+              <button type="button" id="create-canvas-btn">Créer canvas</button>
+            </div>
+            <div id="canvases-container" class="seller-stack"></div>
+          </section>
+
+          <section id="products-tab" class="seller-panel hidden">
+            <div class="grid">
+              <label>Titre <input id="product-title" placeholder="T-shirt premium" /></label>
+              <label>Etsy Product ID <input id="product-etsy-id" placeholder="etsy_12345" /></label>
+              <label>
+                Canvas associé
+                <select id="product-canvas-select"></select>
+              </label>
+            </div>
+            <div class="actions">
+              <button type="button" id="create-product-btn">Créer produit</button>
+            </div>
+            <div id="products-container" class="seller-stack"></div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="./seller.js"></script>
+  </body>
+</html>

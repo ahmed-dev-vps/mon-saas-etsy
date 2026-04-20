@@ -1,0 +1,18 @@
+[
+  {
+    "id": "prd_c242de509160",
+    "userId": "usr_ae70efccd3ae",
+    "title": "Tote Etsy",
+    "etsyProductId": "etsy_tote_1",
+    "linkedCanvasId": "cnv_7cef8e2795ee",
+    "createdAt": "2026-04-16T03:52:33.415Z"
+  },
+  {
+    "id": "prd_2229ad855e94",
+    "userId": "usr_a47bddc818a4",
+    "title": "MUG PERSO",
+    "etsyProductId": "ETSY1",
+    "linkedCanvasId": "gbl_mug",
+    "createdAt": "2026-04-16T14:18:58.572Z"
+  }
+]

@@ -1,0 +1,71 @@
+[
+  {
+    "orderId": "ORD-1001",
+    "email": "client@example.com",
+    "userId": "seed-seller",
+    "designStatus": "pending",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "orderId": "ORD-650655",
+    "email": "buyer@example.com",
+    "userId": "usr_b9c02eb697c9",
+    "designStatus": "pending",
+    "createdAt": "2026-04-16T03:46:02.524Z"
+  },
+  {
+    "orderId": "ORD-829422",
+    "email": "buyer.canvas@example.com",
+    "userId": "usr_a9b5295e0a00",
+    "designStatus": "pending",
+    "createdAt": "2026-04-16T03:49:54.121Z"
+  },
+  {
+    "orderId": "ORD-623780",
+    "email": "buyer.final@example.com",
+    "userId": "usr_ae70efccd3ae",
+    "productId": "prd_c242de509160",
+    "etsyProductId": "etsy_tote_1",
+    "canvasId": "cnv_7cef8e2795ee",
+    "canvas": {
+      "id": "cnv_7cef8e2795ee",
+      "name": "tote bag",
+      "width": 1400,
+      "height": 1600,
+      "printableArea": {
+        "x": 80,
+        "y": 120,
+        "width": 1100,
+        "height": 1200
+      },
+      "mockup": ""
+    },
+    "designStatus": "pending",
+    "createdAt": "2026-04-16T03:52:33.424Z"
+  },
+  {
+    "orderId": "ORD-903639",
+    "email": "aa.bettaieb@gmail.com",
+    "userId": "usr_a47bddc818a4",
+    "productId": "prd_2229ad855e94",
+    "etsyProductId": "ETSY1",
+    "canvasId": "gbl_mug",
+    "canvas": {
+      "id": "gbl_mug",
+      "name": "Mug",
+      "type": "mug",
+      "width": 1200,
+      "height": 900,
+      "printableArea": {
+        "x": 140,
+        "y": 160,
+        "width": 920,
+        "height": 520
+      },
+      "mockupUrl": "",
+      "isGlobal": true
+    },
+    "designStatus": "completed",
+    "createdAt": "2026-04-16T14:19:23.340Z"
+  }
+]

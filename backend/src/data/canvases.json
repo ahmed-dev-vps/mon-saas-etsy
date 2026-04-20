@@ -1,0 +1,121 @@
+[
+  {
+    "id": "cnv_7cef8e2795ee",
+    "name": "tote bag",
+    "type": "custom",
+    "width": 1400,
+    "height": 1600,
+    "printableArea": {
+      "x": 80,
+      "y": 120,
+      "width": 1100,
+      "height": 1200
+    },
+    "mockupUrl": "",
+    "isGlobal": false,
+    "userId": "usr_ae70efccd3ae",
+    "createdAt": "2026-04-16T03:52:33.398Z"
+  },
+  {
+    "id": "gbl_mug",
+    "name": "Mug",
+    "type": "mug",
+    "width": 1200,
+    "height": 900,
+    "printableArea": {
+      "x": 140,
+      "y": 160,
+      "width": 920,
+      "height": 520
+    },
+    "mockupUrl": "",
+    "isGlobal": true,
+    "userId": null,
+    "createdAt": "2026-04-16T04:23:18.316Z"
+  },
+  {
+    "id": "gbl_tshirt",
+    "name": "T-shirt",
+    "type": "tshirt",
+    "width": 1800,
+    "height": 2000,
+    "printableArea": {
+      "x": 300,
+      "y": 320,
+      "width": 1200,
+      "height": 1400
+    },
+    "mockupUrl": "",
+    "isGlobal": true,
+    "userId": null,
+    "createdAt": "2026-04-16T04:23:18.316Z"
+  },
+  {
+    "id": "gbl_totebag",
+    "name": "Tote bag",
+    "type": "totebag",
+    "width": 1600,
+    "height": 2000,
+    "printableArea": {
+      "x": 250,
+      "y": 400,
+      "width": 1100,
+      "height": 1200
+    },
+    "mockupUrl": "",
+    "isGlobal": true,
+    "userId": null,
+    "createdAt": "2026-04-16T04:23:18.316Z"
+  },
+  {
+    "id": "gbl_poster",
+    "name": "Poster",
+    "type": "poster",
+    "width": 2000,
+    "height": 2800,
+    "printableArea": {
+      "x": 150,
+      "y": 150,
+      "width": 1700,
+      "height": 2500
+    },
+    "mockupUrl": "",
+    "isGlobal": true,
+    "userId": null,
+    "createdAt": "2026-04-16T04:23:18.316Z"
+  },
+  {
+    "id": "gbl_hoodie",
+    "name": "Hoodie",
+    "type": "hoodie",
+    "width": 2000,
+    "height": 2200,
+    "printableArea": {
+      "x": 380,
+      "y": 420,
+      "width": 1240,
+      "height": 1300
+    },
+    "mockupUrl": "",
+    "isGlobal": true,
+    "userId": null,
+    "createdAt": "2026-04-16T04:23:18.316Z"
+  },
+  {
+    "id": "cnv_54bf798e7647",
+    "name": "Mon format",
+    "type": "custom",
+    "width": 1000,
+    "height": 800,
+    "printableArea": {
+      "x": 50,
+      "y": 60,
+      "width": 900,
+      "height": 600
+    },
+    "mockupUrl": "",
+    "isGlobal": false,
+    "userId": "usr_22db1be70fa3",
+    "createdAt": "2026-04-16T04:23:18.346Z"
+  }
+]
