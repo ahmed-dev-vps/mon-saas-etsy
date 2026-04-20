@@ -2,7 +2,10 @@ import * as THREE from "https://unpkg.com/three@0.165.0/build/three.module.js";
 import { OrbitControls } from "https://unpkg.com/three@0.165.0/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "https://unpkg.com/three@0.165.0/examples/jsm/loaders/GLTFLoader.js";
 
-const API_URL = "http://localhost:4000/api";
+const API_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:4000/api"
+    : "/api";
 const PRINTABLE_ZONE = {
   width: 2000,
   height: 900,
@@ -112,9 +115,15 @@ function configureWorkspaceFromCanvas(canvas) {
     return;
   }
 
-  const printableArea = canvas?.printableArea || PRINTABLE_ZONE;
-  const width = Math.max(1200, printableArea.width || PRINTABLE_ZONE.width);
-  const height = Math.max(540, printableArea.height || PRINTABLE_ZONE.height);
+  const sourceWidth = canvas?.printableArea?.width || PRINTABLE_ZONE.width;
+  const sourceHeight = canvas?.printableArea?.height || PRINTABLE_ZONE.height;
+  const ratio = sourceHeight > 0 ? sourceWidth / sourceHeight : PRINTABLE_ZONE.width / PRINTABLE_ZONE.height;
+  const width = PRINTABLE_ZONE.width;
+  let height = Math.round(width / ratio);
+
+  if (height < 680 || height > 1100) {
+    height = PRINTABLE_ZONE.height;
+  }
   fabricCanvas.setDimensions({ width, height }, { backstoreOnly: true });
   syncCanvasDisplaySize(width, height);
   fabricCanvas.renderAll();
@@ -302,6 +311,64 @@ async function syncMugTextureFromCanvas(versionAtStart) {
         ? "Design synchronisé sur le mug 3D."
         : "Aucun matériau compatible trouvé dans le modèle 3D.";
   }
+}
+
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error("Unable to load design image"));
+    image.src = src;
+  });
+}
+
+async function buildMugTextureFromDesign() {
+  const printableCanvas = document.createElement("canvas");
+  printableCanvas.width = PRINTABLE_ZONE.width;
+  printableCanvas.height = PRINTABLE_ZONE.height;
+  const ctx = printableCanvas.getContext("2d");
+
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, printableCanvas.width, printableCanvas.height);
+
+  if (fabricCanvas) {
+    const multiplier = Math.max(
+      PRINTABLE_ZONE.width / fabricCanvas.getWidth(),
+      PRINTABLE_ZONE.height / fabricCanvas.getHeight(),
+      1,
+    );
+
+    const sourceDataUrl = fabricCanvas.toDataURL({
+      format: "png",
+      multiplier,
+      enableRetinaScaling: true,
+    });
+    const sourceImage = await loadImage(sourceDataUrl);
+    const sourceRatio = sourceImage.width / sourceImage.height;
+    const maxWidth = printableCanvas.width * 0.88;
+    const maxHeight = printableCanvas.height * 0.78;
+    const targetRatio = maxWidth / maxHeight;
+
+    let drawWidth = maxWidth;
+    let drawHeight = maxHeight;
+    if (sourceRatio > targetRatio) {
+      drawHeight = drawWidth / sourceRatio;
+    } else {
+      drawWidth = drawHeight * sourceRatio;
+    }
+
+    const drawX = (printableCanvas.width - drawWidth) / 2;
+    const drawY = (printableCanvas.height - drawHeight) / 2;
+    ctx.drawImage(sourceImage, drawX, drawY, drawWidth, drawHeight);
+  }
+
+  const texture = new THREE.CanvasTexture(printableCanvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.minFilter = THREE.LinearMipmapLinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+  texture.generateMipmaps = true;
+  texture.flipY = false;
+  return texture;
 }
 
 function addDefaultTemplate(templateName) {
@@ -601,15 +668,125 @@ function bindMug3DViewerEvents() {
   if (!mug3DViewer || !mug3DStatus) {
     return;
   }
+  if (mugRenderer) {
+    return;
+  }
 
-  mug3DViewer.addEventListener("load", () => {
-    mug3DStatus.textContent = "Modèle 3D chargé : synchronisation du design...";
-    scheduleMugTextureSync();
-  });
+  mugScene = new THREE.Scene();
+  mugScene.background = new THREE.Color("#f1f5f9");
 
-  mug3DViewer.addEventListener("error", () => {
-    mug3DStatus.textContent =
-      "Impossible de charger le modèle 3D. Vérifiez la présence de assets/models/mug.glb.";
+  mugCamera = new THREE.PerspectiveCamera(
+    36,
+    mug3DViewer.clientWidth / Math.max(1, mug3DViewer.clientHeight),
+    0.01,
+    100,
+  );
+  mugCamera.position.set(0, 0.18, 1.8);
+
+  mugRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+  mugRenderer.outputColorSpace = THREE.SRGBColorSpace;
+  mugRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  mugRenderer.setSize(mug3DViewer.clientWidth, mug3DViewer.clientHeight);
+  mugRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+  mugRenderer.toneMappingExposure = 1.12;
+  mugRenderer.shadowMap.enabled = true;
+  mugRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  mug3DViewer.appendChild(mugRenderer.domElement);
+
+  mugControls = new OrbitControls(mugCamera, mugRenderer.domElement);
+  mugControls.enableDamping = true;
+  mugControls.autoRotate = true;
+  mugControls.autoRotateSpeed = 1.2;
+  mugControls.minDistance = 0.9;
+  mugControls.maxDistance = 3;
+  mugControls.target.set(0, 0.12, 0);
+
+  const hemiLight = new THREE.HemisphereLight("#ffffff", "#dbeafe", 1.3);
+  mugScene.add(hemiLight);
+
+  const keyLight = new THREE.DirectionalLight("#ffffff", 1.4);
+  keyLight.position.set(2.2, 2.4, 2.6);
+  mugScene.add(keyLight);
+
+  const fillLight = new THREE.DirectionalLight("#ffffff", 0.7);
+  fillLight.position.set(-2, 1.2, -1.2);
+  mugScene.add(fillLight);
+
+  const loader = new GLTFLoader();
+  loader.load(
+    "./assets/models/mug.glb",
+    (gltf) => {
+      mugModel = gltf.scene;
+      mugModel.traverse((node) => {
+        if (!node.isMesh) {
+          return;
+        }
+
+        node.castShadow = true;
+        node.receiveShadow = true;
+        if (Array.isArray(node.material)) {
+          node.material = node.material.map((material) => material.clone());
+        } else if (node.material) {
+          node.material = node.material.clone();
+        }
+      });
+
+      mugPrintableMaterials = collectPrintableMaterials(mugModel);
+
+      mugModel.traverse((node) => {
+        if (!node.isMesh || !node.material) {
+          return;
+        }
+
+        const mats = Array.isArray(node.material) ? node.material : [node.material];
+        mats.forEach((material) => {
+          if (!material?.isMeshStandardMaterial) {
+            return;
+          }
+          if (!mugPrintableMaterials.includes(material)) {
+            material.color.set("#ffffff");
+            material.map = null;
+            material.needsUpdate = true;
+          }
+        });
+      });
+
+      const box = new THREE.Box3().setFromObject(mugModel);
+      const center = box.getCenter(new THREE.Vector3());
+      mugModel.position.sub(center);
+      mugModel.position.y = -0.1;
+
+      mugScene.add(mugModel);
+      mug3DStatus.textContent = "Modèle 3D chargé : synchronisation du design...";
+      scheduleMugTextureSync();
+    },
+    undefined,
+    () => {
+      mug3DStatus.textContent =
+        "Impossible de charger le modèle 3D. Vérifiez la présence de assets/models/mug.glb.";
+    },
+  );
+
+  const renderLoop = () => {
+    requestAnimationFrame(renderLoop);
+    mugControls?.update();
+    mugRenderer?.render(mugScene, mugCamera);
+  };
+  renderLoop();
+
+  window.addEventListener("resize", () => {
+    if (!mugRenderer || !mugCamera || !mug3DViewer) {
+      return;
+    }
+    const width = mug3DViewer.clientWidth;
+    const height = mug3DViewer.clientHeight || 300;
+    mugCamera.aspect = width / height;
+    mugCamera.updateProjectionMatrix();
+    mugRenderer.setSize(width, height);
+    if (fabricCanvas) {
+      syncCanvasDisplaySize(fabricCanvas.getWidth(), fabricCanvas.getHeight());
+      updatePreview();
+    }
   });
 }
 
